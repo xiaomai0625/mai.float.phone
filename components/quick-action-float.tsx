@@ -84,6 +84,7 @@ export function QuickActionFloat() {
     const [floatingPosition, setFloatingPosition] = useState<FloatingPosition | null>(null);
     const [popoverPosition, setPopoverPosition] = useState<PopoverPosition | null>(null);
     const [draggingFloatingButton, setDraggingFloatingButton] = useState(false);
+    const [chamberStep, setChamberStep] = useState(0);
     const [floatingDockEnabled, setFloatingDockEnabled] = useState(false);
     const [promptViewerEnabled, setPromptViewerEnabled] = useState(false);
     const dockState = useSyncExternalStore(subscribeFloatingDockState, getFloatingDockState, getFloatingDockState);
@@ -525,6 +526,8 @@ export function QuickActionFloat() {
             return;
         }
 
+        setChamberStep(step => step + 1);
+
         // If already open, clicking it collapses back to dock
         if (open) {
             handleClose();
@@ -618,7 +621,10 @@ export function QuickActionFloat() {
                 onClick={handleFloatingButtonClick}
                 style={buttonStyle}
             >
-                <SlidersHorizontal size={24} strokeWidth={1.9} />
+                <span className="quick-action-cylinder" style={{ transform: `rotate(${chamberStep * 60}deg)` }} aria-hidden="true">
+                    {Array.from({ length: 6 }, (_, index) => <span className="quick-action-chamber" key={index} />)}
+                    <span className="quick-action-cylinder-hub"><SlidersHorizontal size={12} strokeWidth={2} /></span>
+                </span>
             </button>
 
             {open ? (
