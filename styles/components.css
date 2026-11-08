@@ -1682,27 +1682,82 @@
 
 .prompt-viewer-float-button.quick-action-float-button {
   bottom: 148px;
-  background:
-    radial-gradient(circle at 42% 36%, rgba(126, 232, 205, 0.78) 0%, rgba(123, 196, 255, 0.52) 36%, rgba(167, 144, 255, 0.2) 60%, transparent 76%);
-  box-shadow:
-    0 0 20px 4px rgba(96, 218, 195, 0.14),
-    0 5px 14px rgba(70, 154, 195, 0.11);
+  color: var(--c-text-title);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.68), rgba(154, 184, 190, 0.42) 55%, rgba(255, 255, 255, 0.52));
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: 0 6px 16px rgba(29, 58, 69, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.9), inset 0 -2px 3px rgba(44, 81, 87, 0.2);
+  animation: none;
+  transform: scale(0.86);
 }
 
 .prompt-viewer-float-button.quick-action-float-button::after {
-  background: radial-gradient(circle at 45% 40%, rgba(100, 230, 206, 0.13) 0%, transparent 66%);
+  inset: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  background: none;
 }
 
-.prompt-viewer-float-button.quick-action-float-button:hover {
-  box-shadow:
-    0 0 28px 6px rgba(96, 218, 195, 0.22),
-    0 5px 16px rgba(70, 154, 195, 0.16);
+.quick-action-cylinder {
+  position: relative;
+  display: block;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(65, 104, 110, 0.4);
+  background: linear-gradient(150deg, rgba(243, 252, 252, 0.5), rgba(80, 131, 136, 0.2) 55%, rgba(255, 255, 255, 0.45));
+  box-shadow: inset 0 2px 4px rgba(27, 68, 77, 0.18), 0 1px 1px rgba(255, 255, 255, 0.75);
+  transition: transform 420ms cubic-bezier(0.2, 0.75, 0.25, 1);
+  pointer-events: none;
 }
 
+.quick-action-chamber {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(75, 114, 121, 0.55);
+  background: rgba(61, 108, 116, 0.36);
+  box-shadow: inset 0 1px 3px rgba(23, 65, 73, 0.35), 0 1px 1px rgba(255, 255, 255, 0.7);
+  transform: translate(-50%, -50%);
+}
+
+.quick-action-chamber:nth-child(1) { left: 50%; top: 17%; }
+.quick-action-chamber:nth-child(2) { left: 79%; top: 34%; }
+.quick-action-chamber:nth-child(3) { left: 79%; top: 66%; }
+.quick-action-chamber:nth-child(4) { left: 50%; top: 83%; }
+.quick-action-chamber:nth-child(5) { left: 21%; top: 66%; }
+.quick-action-chamber:nth-child(6) { left: 21%; top: 34%; }
+
+.quick-action-cylinder-hub {
+  position: absolute;
+  inset: 13px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  color: #264e56;
+  background: rgba(224, 244, 243, 0.8);
+  box-shadow: 0 1px 3px rgba(28, 69, 76, 0.25);
+}
+
+.prompt-viewer-float-button.quick-action-float-button .quick-action-cylinder-hub svg {
+  width: 12px;
+  height: 12px;
+}
+
+.prompt-viewer-float-button.quick-action-float-button:hover,
 .prompt-viewer-float-button.quick-action-float-button[data-dragging] {
-  box-shadow:
-    0 0 32px 8px rgba(96, 218, 195, 0.26),
-    0 6px 18px rgba(70, 154, 195, 0.18);
+  box-shadow: 0 9px 22px rgba(29, 58, 69, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.9), inset 0 -2px 3px rgba(44, 81, 87, 0.2);
+}
+
+.prompt-viewer-float-button.quick-action-float-button:focus-visible {
+  outline: 2px solid var(--c-icon-active);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quick-action-cylinder { transition: none; }
 }
 
 /* 悬浮球贴边停靠状态（半隐藏、低透明度、平滑阻尼动效） */
@@ -1724,6 +1779,32 @@
 
 .prompt-viewer-float-button.is-docked[data-dock-side="left"]:hover {
   transform: translateX(-24px) scale(0.78);
+}
+
+/* 快捷操作收拢到边缘，仅露出约 16px；点击后由 is-open / is-expanded 恢复。 */
+.prompt-viewer-float-button.quick-action-float-button.is-docked {
+  transform: translateX(48px) scale(0.6);
+  opacity: 0.32;
+}
+
+.prompt-viewer-float-button.quick-action-float-button.is-docked[data-dock-side="left"] {
+  transform: translateX(-48px) scale(0.6);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .prompt-viewer-float-button.quick-action-float-button.is-docked:hover {
+    transform: translateX(32px) scale(0.7);
+    opacity: 0.75;
+  }
+
+  .prompt-viewer-float-button.quick-action-float-button.is-docked[data-dock-side="left"]:hover {
+    transform: translateX(-32px) scale(0.7);
+  }
+}
+
+.prompt-viewer-float-button.quick-action-float-button.is-docked:focus-visible {
+  transform: translateX(0) scale(0.86);
+  opacity: 1;
 }
 
 /* 弹窗打开态与展开挑选状态：恢复完全可见，停止原浮动动画保证贴边过渡丝滑无跳帧 */
